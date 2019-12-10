@@ -1,0 +1,5 @@
+﻿Enable-Migrations -ContextTypeName JobsContext -MigrationsDirectory Migrations\Jobs
+
+add-migration -ConfigurationTypeName EDIsystems.Migrations.Jobs.Configuration "EDIsystems_db_migrations_002"
+
+update-database -ConfigurationTypeName EDIsystems.Migrations.Jobs.Configuration

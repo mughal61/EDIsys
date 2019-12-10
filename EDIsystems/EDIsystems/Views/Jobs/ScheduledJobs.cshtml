@@ -1,0 +1,109 @@
+﻿@model EDIsystems.ViewModels.JobsScheduledJobsViewModel
+@using System.Data
+@using EDIsystems.Models.Jobs
+@using FluentDate
+@using FluentDateTime
+
+@{
+    ViewBag.Title = "ShowScheduledJobsTable";
+}
+
+@functions {
+    public DateTime GetDate(int weekNo)
+    {
+        //@DateTime.Today.AddDays(-(int)DateTime.Today.DayOfWeek + (int)DayOfWeek.Sunday).Date.ToString("d")
+        var str = weekNo.Weeks().Ago();
+        return str;
+    }
+}
+
+<h2>ShowScheduledJobsTable</h2>
+
+<div class="btn-group">
+
+    @Html.ActionLink("Previous Week"
+                         , "ScheduledJobs"
+                         , "Jobs"
+                         , new
+                         {
+                             val = Model.weekNumber + 1
+                         }
+                         , null
+                         )
+
+    @Html.ActionLink("Next Week"
+                     , "ScheduledJobs"
+                     , "Jobs"
+                     , new
+                     {
+                         val = Model.weekNumber - 1
+                     }
+                     , null
+                     )
+
+</div>
+
+<div>
+    @if (Model != null)
+    {
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>AppName</th>
+                    <th>Sunday (@GetDate(Model.weekNumber).AddDays(-(int)DateTime.Today.DayOfWeek + (int)DayOfWeek.Sunday).Date.ToString("d"))</th>
+                    <th>Monday (@GetDate(Model.weekNumber).AddDays(-(int)DateTime.Today.DayOfWeek + (int)DayOfWeek.Monday).Date.ToString("d"))</th>
+                    <th>Tuesday (@GetDate(Model.weekNumber).AddDays(-(int)DateTime.Today.DayOfWeek + (int)DayOfWeek.Tuesday).Date.ToString("d"))</th>
+                    <th>Wednesday (@GetDate(Model.weekNumber).AddDays(-(int)DateTime.Today.DayOfWeek + (int)DayOfWeek.Wednesday).Date.ToString("d"))</th>
+                    <th>Thursday @GetDate(Model.weekNumber).AddDays(-(int)DateTime.Today.DayOfWeek + (int)DayOfWeek.Thursday).Date.ToString("d"))</th>
+                    <th>Friday (@GetDate(Model.weekNumber).AddDays(-(int)DateTime.Today.DayOfWeek + (int)DayOfWeek.Friday).Date.ToString("d"))</th>
+                    <th>Saturday (@GetDate(Model.weekNumber).AddDays(-(int)DateTime.Today.DayOfWeek + (int)DayOfWeek.Saturday).Date.ToString("d"))</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.appsList)
+                {
+                    <tr>
+                        <td>
+                            @item.AppName
+                        </td>
+                        <td>
+                            @{ var info1 = Model.jobsList.Where(x => x.AppId == item.AppId && x.JobDate.Date.ToString("d") == @GetDate(Model.weekNumber).AddDays(-(int)DateTime.Today.DayOfWeek + (int)DayOfWeek.Sunday).Date.ToString("d")).FirstOrDefault(); }
+                            @if (info1 != null)
+                            {@Html.Partial("_JobsDetails", info1)}
+                        </td>
+                        <td>
+                            @{ var info2 = Model.jobsList.Where(x => x.AppId == item.AppId && x.JobDate.ToString("d") == @GetDate(Model.weekNumber).AddDays(-(int)DateTime.Today.DayOfWeek + (int)DayOfWeek.Monday).Date.ToString("d")).FirstOrDefault(); }
+                            @if (info2 != null)
+                            {@Html.Partial("_JobsDetails", info2)}
+                        </td>
+                        <td>
+                            @{ var info3 = Model.jobsList.Where(x => x.AppId == item.AppId && x.JobDate.ToString("d") == @GetDate(Model.weekNumber).AddDays(-(int)DateTime.Today.DayOfWeek + (int)DayOfWeek.Tuesday).Date.ToString("d")).FirstOrDefault(); }
+                            @if (info3 != null)
+                            {@Html.Partial("_JobsDetails", info3)}
+                        </td>
+                        <td>
+                            @{ var info4 = Model.jobsList.Where(x => x.AppId == item.AppId && x.JobDate.ToString("d") == @GetDate(Model.weekNumber).AddDays(-(int)DateTime.Today.DayOfWeek + (int)DayOfWeek.Wednesday).Date.ToString("d")).FirstOrDefault(); }
+                            @if (info4 != null)
+                            {@Html.Partial("_JobsDetails", info4)}
+                        </td>
+                        <td>
+                            @{ var info5 = Model.jobsList.Where(x => x.AppId == item.AppId && x.JobDate.ToString("d") == @GetDate(Model.weekNumber).AddDays(-(int)DateTime.Today.DayOfWeek + (int)DayOfWeek.Thursday).Date.ToString("d")).FirstOrDefault(); }
+                            @if (info5 != null)
+                            {@Html.Partial("_JobsDetails", info5)}
+                        </td>
+                        <td>
+                            @{ var info6 = Model.jobsList.Where(x => x.AppId == item.AppId && x.JobDate.ToString("d") == @GetDate(Model.weekNumber).AddDays(-(int)DateTime.Today.DayOfWeek + (int)DayOfWeek.Friday).Date.ToString("d")).FirstOrDefault(); }
+                            @if (info6 != null)
+                            {@Html.Partial("_JobsDetails", info6)}
+                        </td>
+                        <td>
+                            @{ var info7 = Model.jobsList.Where(x => x.AppId == item.AppId && x.JobDate.ToString("d") == @GetDate(Model.weekNumber).AddDays(-(int)DateTime.Today.DayOfWeek + (int)DayOfWeek.Saturday).Date.ToString("d")).FirstOrDefault(); }
+                            @if (info7 != null)
+                            {@Html.Partial("_JobsDetails", info7)}
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
